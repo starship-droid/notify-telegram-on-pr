@@ -17,7 +17,7 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
-          MESSAGE="📣 New PR by ${PR_AUTHOR}: *${PR_TITLE}*%0A🔗 ${PR_URL}"
+          MESSAGE="📣 New Pull Request by ${PR_AUTHOR}: *${PR_TITLE}*%0A🔗 ${PR_URL}"
           ARGS="-d chat_id=${TELEGRAM_CHAT_ID} -d text=${MESSAGE} -d parse_mode=Markdown"
 
           if [ -n "${TELEGRAM_THREAD_ID}" ]; then
