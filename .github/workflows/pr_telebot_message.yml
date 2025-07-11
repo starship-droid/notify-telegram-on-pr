@@ -1,14 +1,15 @@
-name: Notify Telegram on PR
+name: Notify Telegram on PR Events
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, closed]
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
       - name: Send Telegram Message
+        if: github.event.pull_request.state == 'open' || github.event.pull_request.merged == true
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -16,8 +17,13 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_URL: ${{ github.event.pull_request.html_url }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          IS_MERGED: ${{ github.event.pull_request.merged }}
         run: |
-          TEXT="New PR by $PR_AUTHOR: *$PR_TITLE*%0ALink: $PR_URL"
+          if [ "$IS_MERGED" = "true" ]; then
+            TEXT="✅ *PR Merged!* by $PR_AUTHOR: *$PR_TITLE*%0ALink: $PR_URL"
+          else
+            TEXT="🆕 New PR by $PR_AUTHOR: *$PR_TITLE*%0ALink: $PR_URL"
+          fi
 
           CURL_ARGS=(
             -d chat_id="$TELEGRAM_CHAT_ID"
@@ -30,4 +36,3 @@ jobs:
           fi
 
           curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage "${CURL_ARGS[@]}"
-
