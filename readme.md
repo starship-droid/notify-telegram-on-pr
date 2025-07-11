@@ -1,17 +1,32 @@
-# Telegram PR Notifier
+# Notify Telegram on New Pull Request
+────────────────────────────────────────────
 
-This GitHub Action sends a message to a Telegram group whenever a new Pull Request is opened. You can target either the main group chat or a specific topic (thread) if your group has topics enabled.
+        ┌────────────┐
+        │  GitHub PR │
+        └────┬───────┘
+             │
+             ▼
+     ┌──────────────────┐
+     │  Telegram Bot 🛎  │
+     └──────────────────┘
+
+Automatically sends a Telegram message whenever a new **Pull Request is opened** in your GitHub repository.
+
+🔧 **Setup Instructions**
+────────────────────────────
+1. Add these secrets to your GitHub repo:
+   - `TELEGRAM_BOT_TOKEN` → Bot token from [@BotFather](https://t.me/BotFather)
+   - `TELEGRAM_CHAT_ID`   → Your chat/group ID
+   - `TELEGRAM_THREAD_ID` → (Optional) Thread ID for topics in groups
+
+2. Drop this workflow in `.github/workflows/notify-pr.yml`.
+
+📬 Message Format:
+```
+
+New PR by <author>: *<title>*
+Link: <URL>
 
 ```
 
-+------------------------+      +---------------------------+
-\|  Regular Telegram Chat | <--> |  Message in main thread   |
-+------------------------+      +---------------------------+
-
-+------------------------+      +---------------------------+
-\| Group with Topics ON   | <--> | Message in specific topic |
-+------------------------+      +---------------------------+
-
-```
-
-To set up: [1] Create a Telegram bot via @BotFather and add it to your group, [2] collect the bot token, group chat ID (`-100...`), and optional topic ID, then [3] store them in GitHub Secrets as `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, and (optionally) `TELEGRAM_THREAD_ID`.
+💡 Uses Markdown formatting and supports threads for organized notifications.
