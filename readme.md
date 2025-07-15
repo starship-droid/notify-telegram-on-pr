@@ -8,11 +8,6 @@
       ┌────────────────┐
       │  Telegram Bot  │
       └────────────────┘
-              │
-              ▼
-      ┌────────────────┐
-      │  Telegram Msg  │
-      └────────────────┘
 
 Automatically sends a Telegram message whenever a new **Pull Request is opened** in your GitHub repository.
 
