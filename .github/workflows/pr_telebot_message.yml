@@ -20,9 +20,9 @@ jobs:
           IS_MERGED: ${{ github.event.pull_request.merged }}
         run: |
           if [ "$IS_MERGED" = "true" ]; then
-            TEXT="✅ *PR Merged!* by $PR_AUTHOR: *$PR_TITLE*%0ALink: $PR_URL"
+            TEXT="*PR Merged!* by $PR_AUTHOR: *$PR_TITLE*%0ALink: $PR_URL"
           else
-            TEXT="🆕 New PR by $PR_AUTHOR: *$PR_TITLE*%0ALink: $PR_URL"
+            TEXT="New PR by $PR_AUTHOR: *$PR_TITLE*%0ALink: $PR_URL"
           fi
 
           CURL_ARGS=(
