@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, closed]
   issues:
-    types: [opened]
+    types: [opened, closed]
 
 jobs:
   notify:
@@ -41,12 +41,19 @@ jobs:
             fi
 
           elif [ "$EVENT_NAME" = "issues" ]; then
-            echo "📌 Handling a new issue"
+            echo "📌 Handling an issue event"
             echo "Issue Title: $ISSUE_TITLE"
             echo "Issue Author: $ISSUE_AUTHOR"
             echo "Issue URL: $ISSUE_URL"
 
-            TEXT="📝 *New Issue* by $ISSUE_AUTHOR: *$ISSUE_TITLE*%0ALink: $ISSUE_URL"
+            if [ "$ACTION" = "opened" ]; then
+              TEXT="📝 *New Issue* by $ISSUE_AUTHOR: *$ISSUE_TITLE*%0ALink: $ISSUE_URL"
+            elif [ "$ACTION" = "closed" ]; then
+              TEXT="✅ *Issue Closed* by $ISSUE_AUTHOR: *$ISSUE_TITLE*%0ALink: $ISSUE_URL"
+            else
+              echo "⚠️ Unsupported issue action: $ACTION"
+              exit 0
+            fi
 
           else
             echo "⚠️ Unsupported event: $EVENT_NAME"
